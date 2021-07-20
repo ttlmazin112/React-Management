@@ -9,3 +9,6 @@ module.exports = function(app) {
     })
   );
 };
+
+// client package.json 에서 proxy가 먹지 않을 때 $ npm install http-proxy-middleware --save
+// 설치 후 setupProxy.js를 설치해 준다.
