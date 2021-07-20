@@ -91,7 +91,7 @@ class App extends Component {
         }
           </TableBody>
         </Table>
-      </Paper>
+      </Paper> //Paper -> Table -> TableHead (-> TableCell) -> TableBody
     )
   }
 }
