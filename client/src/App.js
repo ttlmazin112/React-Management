@@ -7,6 +7,7 @@ import  TableHead  from '@material-ui/core/TableHead';
 import  TableBody  from '@material-ui/core/TableBody';
 import  TableRow  from '@material-ui/core/TableRow';
 import  TableCell  from '@material-ui/core/TableCell';
+import  CircularProgress  from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -18,6 +19,9 @@ const styles =theme => ({
   },
   table: {
     minWidth: 1080
+  },
+  progress:{
+    margin:theme.spacing(2)
   }
 })
 
@@ -36,19 +40,27 @@ const StyledTableCell = withStyles((theme) => ({
 class App extends Component {
 
   state = {
-    customers:""
+    customers:"",
+    completed: 0
   }
 
   componentDidMount(){
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
     .then(res => this.setState({customers: res}))
     .catch(err => console.log(err))
+ 
   }
 
   callApi = async () => {
     const response = await fetch('/api/customers');
     const body = await response.json();
     return body;
+  }
+
+  progress = () =>{
+    const {completed} = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 10 });
   }
 
   render (){
@@ -80,7 +92,12 @@ class App extends Component {
                 job={c.job}
               />
             )
-          }) : ""
+          }) : 
+          <TableRow>
+            <TableCell colSpan="6" align="center">
+              <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+            </TableCell>
+          </TableRow>
         }
           </TableBody>
         </Table>
